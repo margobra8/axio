@@ -13,15 +13,15 @@ class AxioURLManager(models.Manager):
         qs = qs_main.filter(active=False)
         return qs
 
-
-class AxioURLController(models.Manager):
     def refresh_shortcodes(self):
+        print("Running command...")
         qs = AxioURL.objects.filter(id__gte=1)
         codes_changed = 0
         for entry in qs:
             entry.shortcode = create_shortcode(entry)
             entry.save()
-            codes_changed = + 1
+            print("Refreshed: " + entry.url + " >> " + entry.shortcode)
+            codes_changed += 1
         return "Codes refreshed: {i}".format(i=codes_changed)
 
 
@@ -35,7 +35,8 @@ class AxioURL(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)  # se popula cuando se crea el modelo
     active = models.BooleanField(default=True)
 
-    queries = AxioURLManager()
+    manage = AxioURLManager()
+    objects = models.Manager()
 
     def save(self, *args, **kwargs):
         """
