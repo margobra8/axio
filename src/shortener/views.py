@@ -5,6 +5,14 @@ from django.views import View
 from .models import AxioURL
 
 
+class HomeView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, "shortener/home.html", {})
+
+    def post(self, request, *args, **kwargs):
+        return render(request, "shortener/home.html", {})
+
+
 class AxioRedirectView(View):
     def get(self, request, shortcode=None, *args, **kwargs):
         # do something (like analytics ... ...)

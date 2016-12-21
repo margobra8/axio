@@ -17,7 +17,7 @@ from django.conf.urls import url
 from django.contrib import admin
 
 # Importa las views (nuevo método Django 1.10)
-from shortener.views import AxioRedirectView
+from shortener.views import AxioRedirectView, HomeView
 
 # PROHIBIDO HACER:
 # from shortener import views ---> se importa el archivo entero de views!
@@ -26,6 +26,7 @@ from shortener.views import AxioRedirectView
 # EL ORDEN DE LAS URLs IMPORTA, SE DAN PRIORIDAD A LAS PRIMERAS
 urlpatterns = [
     url(r'^manage/', admin.site.urls),
+    url(r"^$", HomeView.as_view()),
     url(r"^(?P<shortcode>[\w-]+){6,15}/$", AxioRedirectView.as_view()),
 
     # PROHIBIDO HACER:
