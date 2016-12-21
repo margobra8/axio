@@ -5,8 +5,9 @@ from shortener.models import AxioURL
 class Command(BaseCommand):
     help = 'Refreshes the shortcodes for all links in the db'
 
-    def add_arguments(self, parser):
-        parser.add_argument('--items', type=int)
+    # TODO: add an argument for the last x items added to the db
+    # def add_arguments(self, parser):
+    #     parser.add_argument('--items', type=int)
 
     def handle(self, *args, **options):
-        return AxioURL.objects.refresh_shortcodes(items=options['items'])
+        return AxioURL.manage.refresh_shortcodes()

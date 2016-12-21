@@ -1,5 +1,9 @@
 from django.db import models
-from .utils import generate_code, create_shortcode
+from .utils import create_shortcode
+
+from django.conf import settings
+
+SHORTCODE_MAX = getattr(settings, "SHORTCODE_MAX", 15)
 
 
 class AxioURLManager(models.Manager):
@@ -20,7 +24,7 @@ class AxioURLManager(models.Manager):
         for entry in qs:
             entry.shortcode = create_shortcode(entry)
             entry.save()
-            print("Refreshed: " + entry.url + " >> " + entry.shortcode)
+            print("Refreshed: " + entry.url + " >>   " + entry.shortcode)
             codes_changed += 1
         return "Codes refreshed: {i}".format(i=codes_changed)
 
@@ -30,7 +34,7 @@ class AxioURL(models.Model):
     This model represents an URL object handled by the axio shortening service
     """
     url = models.CharField(max_length=220)
-    shortcode = models.CharField(max_length=15, unique=True, blank=True)
+    shortcode = models.CharField(max_length=SHORTCODE_MAX, unique=True, blank=True)
     updated = models.DateTimeField(auto_now=True)  # se popula cada vez que el modelo se guarda
     timestamp = models.DateTimeField(auto_now_add=True)  # se popula cuando se crea el modelo
     active = models.BooleanField(default=True)
